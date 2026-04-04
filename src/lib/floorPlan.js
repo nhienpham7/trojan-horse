@@ -86,7 +86,7 @@ export function buildFloorPlan(scene) {
 }
 
 export function buildLighting(scene) {
-  scene.add(new THREE.AmbientLight(0xfff5e0, 0.22));
+  scene.add(new THREE.AmbientLight(0xfff5e0, 1.2));
 
   const positions = [
     [0,             WALL_H - 0.2, mZ + 3],
@@ -103,7 +103,7 @@ export function buildLighting(scene) {
   });
 
   positions.forEach(([x, y, z]) => {
-    const spot = new THREE.SpotLight(0xfff2cc, 1.4, 12, Math.PI / 5, 0.5, 1.5);
+    const spot = new THREE.SpotLight(0xfff2cc, 3.5, 18, Math.PI / 4, 0.5, 1.5);
     spot.position.set(x, y, z);
     spot.castShadow = true;
     spot.shadow.mapSize.set(512, 512);
