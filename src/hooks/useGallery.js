@@ -88,7 +88,7 @@ export function useGallery(canvasRef) {
   useEffect(() => {
     if (!canvasRef.current) return;
 
-    // ── Scene ──────────────────────────────────────────────
+    //  Scene
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x0d0b08);
     scene.fog = new THREE.FogExp2(0x0d0b08, 0.045);
@@ -111,12 +111,12 @@ export function useGallery(canvasRef) {
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-    // ── Build scene ────────────────────────────────────────
+    //Build scene 
     buildFloorPlan(scene);
     buildLighting(scene);
     buildPedestals(scene);
 
-    // ── Paintings ──────────────────────────────────────────
+    //Paintings 
     const paintings = [];
     let idx = 0;
 
@@ -140,7 +140,7 @@ export function useGallery(canvasRef) {
     }
     paintingsRef.current = paintings;
 
-    // ── Resize ─────────────────────────────────────────────
+    // Resize 
     const onResize = () => {
       const w = window.innerWidth;
       const h = window.innerHeight;

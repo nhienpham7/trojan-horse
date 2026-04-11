@@ -1,15 +1,944 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The Trojan Horses</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Noto+Serif+SC:wght@300;400&display=swap" rel="stylesheet" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Trojan Horses — Art Exhibition</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    :root {
+      --gold: #c9a84c;
+      --paper: #f5f0e8;
+      --font: 'Cormorant Garamond', Georgia, serif
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0d0b08;
+      color: var(--paper);
+      font-family: var(--font)
+    }
+
+    #menu {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #0d0b08;
+      transition: opacity 1s ease, visibility 1s ease
+    }
+
+    #menu.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none
+    }
+
+    #menu::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(139, 32, 18, .08) 0%, transparent 70%), radial-gradient(ellipse 60% 80% at 20% 80%, rgba(201, 168, 76, .06) 0%, transparent 60%);
+      pointer-events: none
+    }
+
+    .menu-inner {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 560px;
+      padding: 0 2rem;
+      animation: fadeUp 2.5s ease forwards
+    }
+
+    .seal {
+      width: 64px;
+      height: 64px;
+      border: 1.5px solid var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 2.5rem;
+      animation: pulse 4s ease-in-out infinite
+    }
+
+    .seal span {
+      font-size: 1.6rem;
+      color: var(--gold)
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(201, 168, 76, .3)
+      }
+
+      50% {
+        box-shadow: 0 0 0 8px rgba(201, 168, 76, 0)
+      }
+    }
+
+    .menu-title {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 300;
+      letter-spacing: .18em;
+      color: var(--paper);
+      line-height: 1.15;
+      text-transform: uppercase
+    }
+
+    .menu-title em {
+      display: block;
+      font-style: italic;
+      font-size: .55em;
+      letter-spacing: .35em;
+      color: var(--gold);
+      font-weight: 300;
+      margin-top: .6rem
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 2rem 0
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: .5px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent)
+    }
+
+    .diamond {
+      width: 6px;
+      height: 6px;
+      background: var(--gold);
+      transform: rotate(45deg)
+    }
+
+    .menu-desc {
+      font-size: 1rem;
+      font-weight: 300;
+      letter-spacing: .08em;
+      color: rgba(245, 240, 232, .6);
+      line-height: 1.9;
+      margin-bottom: 2.8rem;
+      font-style: italic
+    }
+
+    .address {
+      font-size: .75rem;
+      letter-spacing: .25em;
+      color: rgba(245, 240, 232, .35);
+      text-transform: uppercase;
+      margin-bottom: 2.5rem
+    }
+
+    .enter-btn {
+      display: inline-block;
+      padding: .85em 3em;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-family: var(--font);
+      font-size: .8rem;
+      letter-spacing: .35em;
+      text-transform: uppercase;
+      cursor: pointer;
+      background: transparent;
+      transition: background .4s, color .4s, box-shadow .4s;
+      position: relative;
+      overflow: hidden
+    }
+
+    .enter-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .4s ease;
+      z-index: -1
+    }
+
+    .enter-btn:hover::before {
+      transform: scaleX(1)
+    }
+
+    .enter-btn:hover {
+      color: #0d0b08;
+      box-shadow: 0 0 30px rgba(201, 168, 76, .3)
+    }
+
+    #gallery {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 1.2s ease .3s, visibility 1.2s ease .3s
+    }
+
+    #gallery.visible {
+      opacity: 1;
+      visibility: visible
+    }
+
+    #gallery canvas {
+      width: 100% !important;
+      height: 100% !important;
+      display: block
+    }
+
+    #hud {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      padding: 1.2rem 1.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 1s ease 1s
+    }
+
+    #hud.visible {
+      opacity: 1
+    }
+
+    .hud-title {
+      font-size: .7rem;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: rgba(245, 240, 232, .7)
+    }
+
+    .hud-title strong {
+      display: block;
+      font-size: 1rem;
+      letter-spacing: .15em;
+      color: var(--gold);
+      font-weight: 300;
+      margin-top: .15rem
+    }
+
+    .controls-hint {
+      font-size: .65rem;
+      letter-spacing: .15em;
+      color: rgba(245, 240, 232, .4);
+      text-align: right;
+      line-height: 1.9
+    }
+
+    #minimap {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 50;
+      opacity: 0;
+      transition: opacity 1s ease 1s
+    }
+
+    #minimap.visible {
+      opacity: 1
+    }
+
+    #minimap canvas {
+      display: block;
+      border: 1px solid rgba(201, 168, 76, .3);
+      border-radius: 3px
+    }
+
+    .mm-label {
+      font-size: .55rem;
+      letter-spacing: .2em;
+      color: rgba(201, 168, 76, .5);
+      text-align: center;
+      margin-top: .4rem;
+      text-transform: uppercase
+    }
+
+    #info {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 1.5rem;
+      z-index: 50;
+      background: rgba(13, 11, 8, .88);
+      border: 1px solid rgba(201, 168, 76, .25);
+      border-left: 3px solid var(--gold);
+      padding: 1rem 1.4rem;
+      max-width: 300px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity .5s ease, transform .5s ease;
+      pointer-events: none
+    }
+
+    #info.show {
+      opacity: 1;
+      transform: translateY(0)
+    }
+
+    #info h3 {
+      font-size: 1rem;
+      font-weight: 400;
+      letter-spacing: .08em;
+      color: var(--gold);
+      margin-bottom: .3rem
+    }
+
+    #info p {
+      font-size: .75rem;
+      letter-spacing: .06em;
+      color: rgba(245, 240, 232, .6);
+      font-style: italic;
+      line-height: 1.7
+    }
+
+    #info .artist {
+      font-size: .7rem;
+      letter-spacing: .12em;
+      color: rgba(245, 240, 232, .4);
+      text-transform: uppercase;
+      margin-top: .4rem;
+      font-style: normal
+    }
+
+    #info .price {
+      font-size: .7rem;
+      letter-spacing: .08em;
+      color: rgba(201, 168, 76, .7);
+      margin-top: .3rem;
+      font-style: normal
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(18px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="menu">
+    <div class="menu-inner">
+      <div class="seal"><span>𝕋</span></div>
+      <h1 class="menu-title">The Trojan Horses<em>Art Exhibition · Chicago</em></h1>
+      <div class="divider">
+        <div class="diamond"></div>
+      </div>
+      <p class="menu-desc">Magnus · Casey · Rohen Jones · Faye<br>Jonah · Winnie · Timothy Zhang · Isaac
+        Ball<br><br><em>A group exhibition of emerging artists.</em></p>
+      <p class="address">3217 S Morgan St · Chicago, IL</p>
+      <button class="enter-btn" id="enterBtn">Enter Gallery</button>
+    </div>
+  </div>
+  <div id="gallery"><canvas id="c"></canvas></div>
+  <div id="hud">
+    <div class="hud-title"><span>Art Exhibition</span><strong>The Trojan Horses</strong></div>
+    <div class="controls-hint">W A S D / ↑↓←→ &nbsp; Move<br>Click &amp; Drag &nbsp; Look<br>Scroll &nbsp; Speed</div>
+  </div>
+  <div id="minimap">
+    <canvas id="mm" width="240" height="100"></canvas>
+    <div class="mm-label">Floor Plan</div>
+  </div>
+  <div id="info">
+    <h3 id="info-title">—</h3>
+    <p id="info-medium">—</p>
+    <p class="artist" id="info-artist"></p>
+    <p class="price" id="info-price"></p>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    // ════════════════════════════════════════════════════════════════
+    // FLOOR PLAN — based on hand-drawn sketch
+    //
+    // Sketch analysis:
+    //  - LEFT ROOM: tall rectangle on west end, door+arc on west wall (NW corner),
+    //    small window on west wall (south), diagonal wall on upper-right cutting
+    //    from (LX1,LZN) down-right to (MX0,MZN). South wall jogs inward to meet
+    //    main hall south wall. Small step-window on south wall near SE corner.
+    //  - MAIN HALL: long wide rectangle east of the diagonal.
+    //    North wall has: 3a/3b panels, then diagonal piece-4 element, then BATHROOM box.
+    //    Casey partition box freestanding centre-left.
+    //    Right section: tall vertical divider wall with gap top+bottom (piece 8).
+    //    South wall has all 7 south-wall pieces.
+    //
+    // Axes: X+ east, Z+ south, Y+ up. Entrance door is on WEST wall (left room).
+    // ════════════════════════════════════════════════════════════════
+
+    const WALL_H = 4.0, T = 0.15;
+
+    // ── LEFT ROOM ─────────────────────────────────────────────────
+    const LX0 = -13.5, LX1 = -8.8;   // west/east edges
+    const LZN = -10.0, LZS = 3.2;   // north/south edges
+    const lCX = (LX0 + LX1) / 2, lCZ = (LZN + LZS) / 2;
+
+    // ── MAIN HALL ─────────────────────────────────────────────────
+    // Diagonal connects upper-right of left room to upper-left of main hall
+    // So MX0 > LX1: main hall starts further east
+    const MX0 = -6.5, MX1 = 13.5;    // west/east
+    const MZN = -8.0, MZS = 1.5;    // north/south (less deep N-S than left room)
+    const mCX = (MX0 + MX1) / 2, mCZ = (MZN + MZS) / 2;
+
+    // South wall step: left room south extends to LZS, main hall south is at MZS
+    // Step vertical wall at X = STEP_X (east edge of left room south section)
+    const STEP_X = LX1;  // step is right where left room meets main hall
+
+    // ── BATHROOM (enclosed room on north wall, right of centre) ────
+    const BTH_X0 = 1.5, BTH_X1 = 6.0;
+    const BTH_ZN = MZN, BTH_ZS = MZN + 3.2;
+
+    // ── CASEY PARTITION BOX (freestanding, centre-left of main hall) ─
+    const CAS_X = -3.5, CAS_Z = -2.8;
+    const CAS_SIZE = 1.6;
+    const CAS_W = CAS_SIZE;
+    const CAS_D = CAS_SIZE;
+
+
+    // ── RIGHT DIVIDER WALL (vertical panel with gaps top+bottom) ───
+    const DIV_X = 10.6;
+    const DIV_ZN = MZN + 0.6, DIV_ZS = MZS - 0.6;
+
+    // ════════════════════════════════════════════════════════════════
+    // ARTWORKS
+    // ════════════════════════════════════════════════════════════════
+    const ARTWORKS = [
+      { id: "1", title: "Manton De", artist: "Magnus", medium: "Installation — hide & fringe", price: "Price on Request", color: 0xc8a050 },
+      { id: "2a", title: "Summer 1", artist: "Casey", medium: "Mixed media on paper", price: "$300", color: 0xd4c8b0 },
+      { id: "2b", title: "Summer 100", artist: "Casey", medium: "Mixed media on paper", price: "$300", color: 0xc8d0b8 },
+      { id: "2c", title: "Raft 3", artist: "Casey", medium: "Mixed media", price: "$3000", color: 0xe8d8c0 },
+      { id: "3a", title: "Untitled", artist: "Rohen Jones", medium: "Oil on canvas", price: "$800", color: 0x8a4030 },
+      { id: "3b", title: "People I Don't Know (monster)", artist: "Rohen Jones", medium: "Mixed media on canvas", price: "Price on Request", color: 0x141810 },
+      { id: "3c", title: "Man Pushing Thru / Shower", artist: "Rohen Jones", medium: "Oil on canvas", price: "$800", color: 0xb0a870 },
+      { id: "3d", title: "Raft 3", artist: "Casey", medium: "Mixed media", price: "$3000", color: 0xe0d0a8 },
+      { id: "4", title: "Dear Glove", artist: "Faye", medium: "Found objects / installation", price: "$450", color: 0xe8e8e8 },
+      { id: "5a", title: "Suspended Cloud", artist: "Jonah", medium: "Mixed media installation", price: "$6000", color: 0xd8e0c8 },
+      { id: "5b", title: "Untitled", artist: "Jonah", medium: "Oil on canvas", price: "$350", color: 0x384838 },
+      { id: "6a", title: "Dragonfly Touches Water", artist: "Winnie", medium: "Mixed media on paper", price: "Price on Request", color: 0xb8c8d8 },
+      { id: "6b", title: "Of Time", artist: "Winnie", medium: "Ink wash on paper", price: "Price on Request", color: 0x606060 },
+      { id: "7a", title: "Helium", artist: "Timothy Zhang", medium: "Oil on canvas", price: "Price on Request", color: 0x3a4030 },
+      { id: "7b", title: "Ghost of Fear", artist: "Timothy Zhang", medium: "Oil on canvas", price: "Price on Request", color: 0x304828 },
+      { id: "7c", title: "Untitled", artist: "Timothy Zhang", medium: "Mixed media on canvas", price: "Price on Request", color: 0x5a3828 },
+      { id: "7d", title: "The Joke", artist: "Timothy Zhang", medium: "Oil on canvas", price: "Price on Request", color: 0xc03020 },
+      { id: "8", title: "PARADE!", artist: "Isaac Ball", medium: "Ink on paper — wall installation", price: "$2500 per piece", color: 0xd8d0c0 },
+    ];
+
+    // ════════════════════════════════════════════════════════════════
+    // TEXTURES
+    // ════════════════════════════════════════════════════════════════
+    const TC = new Map();
+    function mkTex(id) {
+      if (TC.has(id)) return TC.get(id);
+      const S = 512, cv = document.createElement("canvas"); cv.width = cv.height = S;
+      const c = cv.getContext("2d");
+      const pal = {
+        "1": { bg: "#c8a050", st: ["#3a2010", "#8a5820", "#1a0808"] },
+        "2a": { bg: "#d4c8b0", st: ["#8a7050", "#c8a860", "#604030"] },
+        "2b": { bg: "#c8d0b8", st: ["#506040", "#304828", "#8a9870"] },
+        "2c": { bg: "#e8d8c0", st: ["#9a7840", "#604030", "#c0a060"] },
+        "3a": { bg: "#6a2820", st: ["#3a1008", "#9a6040", "#c88050"] },
+        "3b": { bg: "#141810", st: ["#203018", "#304028", "#080c08"] },
+        "3c": { bg: "#b0a870", st: ["#604830", "#382010", "#c0b080"] },
+        "3d": { bg: "#e0d0a8", st: ["#806840", "#504030", "#c0a860"] },
+        "4": { bg: "#f0f0f0", st: ["#406080", "#d08090", "#204060"] },
+        "5a": { bg: "#d8e0c8", st: ["#8a9870", "#6a7850", "#b0b898"] },
+        "5b": { bg: "#304038", st: ["#203828", "#486050", "#182820"] },
+        "6a": { bg: "#d0c8e0", st: ["#705090", "#908090", "#405878"] },
+        "6b": { bg: "#909090", st: ["#303030", "#505050", "#181818"] },
+        "7a": { bg: "#303828", st: ["#485040", "#607050", "#202818"] },
+        "7b": { bg: "#284020", st: ["#405030", "#806030", "#304828"] },
+        "7c": { bg: "#382018", st: ["#902010", "#602018", "#481008"] },
+        "7d": { bg: "#c03020", st: ["#205878", "#f0f0f0", "#c0a000"] },
+        "8": { bg: "#d8d0c0", st: ["#181810", "#080800", "#303020"] },
+      };
+      const p = pal[id] || { bg: "#c0b090", st: ["#604030", "#302010", "#806040"] };
+      c.fillStyle = p.bg; c.fillRect(0, 0, S, S);
+      c.globalAlpha = 0.1; for (let i = 0; i < 3000; i++) { c.fillStyle = Math.random() > .5 ? "#fff" : "#000"; c.fillRect(Math.random() * S, Math.random() * S, Math.random() * 2 + .5, Math.random() * 2 + .5); } c.globalAlpha = 1;
+      if (id === "1") {
+        c.fillStyle = "#8a6030"; c.globalAlpha = .7; c.beginPath(); c.moveTo(S * .2, 0); c.lineTo(S * .8, 0); c.lineTo(S * .5, S * .65); c.closePath(); c.fill(); c.globalAlpha = .9; c.strokeStyle = "#1a0808"; c.lineWidth = 3; for (let i = 0; i < 18; i++) { const x = S * (.2 + i / 17 * .6), y0 = S * (.5 + Math.abs(i - 9) * .015); c.beginPath(); c.moveTo(x, y0); c.lineTo(x + (Math.random() - .5) * 10, y0 + S * .17); c.stroke(); } c.globalAlpha = 1;
+      } else if (["2a", "2b", "2c", "3d"].includes(id)) {
+        p.st.forEach((col, i) => { c.globalAlpha = .4 + i * .15; c.strokeStyle = col; c.lineWidth = 4 + Math.random() * 12; for (let j = 0; j < 8; j++) { c.beginPath(); c.moveTo(Math.random() * S, Math.random() * S); c.bezierCurveTo(Math.random() * S, Math.random() * S, Math.random() * S, Math.random() * S, Math.random() * S, Math.random() * S); c.stroke(); } }); c.globalAlpha = .3; c.fillStyle = "#f0e8d0"; c.fillRect(S * .25, S * .2, S * .5, S * .55); c.globalAlpha = 1;
+      } else if (id === "3a") {
+        c.fillStyle = "#7a3828"; c.fillRect(0, 0, S, S); c.globalAlpha = .75; c.fillStyle = "#c89060"; c.beginPath(); c.ellipse(S * .45, S * .5, S * .38, S * .18, 0, 0, Math.PI * 2); c.fill(); c.fillStyle = "#d0a878"; c.beginPath(); c.ellipse(S * .75, S * .46, S * .09, S * .11, 0, 0, Math.PI * 2); c.fill(); c.globalAlpha = .6; c.fillStyle = "#803040"; c.fillRect(S * .3, S * .48, S * .25, S * .12); c.globalAlpha = 1;
+      } else if (id === "3b") {
+        c.fillStyle = "#101410"; c.fillRect(0, 0, S, S); c.globalAlpha = .35; c.strokeStyle = "#304028"; c.lineWidth = 1; for (let i = 0; i < 20; i++) { c.beginPath(); c.moveTo(0, i / 20 * S); c.lineTo(S, i / 20 * S); c.stroke(); c.beginPath(); c.moveTo(i / 20 * S, 0); c.lineTo(i / 20 * S, S); c.stroke(); } c.globalAlpha = .5; c.fillStyle = "#c0c0c0"; c.beginPath(); c.arc(S * .18, S * .42, S * .055, 0, Math.PI * 2); c.fill(); c.globalAlpha = 1;
+      } else if (id === "3c") {
+        c.fillStyle = "#b0a868"; c.fillRect(0, 0, S, S); c.globalAlpha = .5; c.strokeStyle = "#d0c8a0"; c.lineWidth = 6; for (let i = 0; i < 8; i++) { c.beginPath(); c.moveTo(i / 8 * S, 0); c.lineTo(i / 8 * S + (Math.random() - .5) * 20, S); c.stroke(); } c.globalAlpha = .65; c.fillStyle = "#3a2818"; c.beginPath(); c.moveTo(S * .3, S * .15); c.lineTo(S * .6, S * .15); c.lineTo(S * .65, S * .85); c.lineTo(S * .25, S * .85); c.closePath(); c.fill(); c.globalAlpha = 1;
+      } else if (id === "4") {
+        c.fillStyle = "#f0f0f0"; c.fillRect(0, 0, S, S); const gc = [0x606060, 0xcc88aa, 0x3366aa, 0x4488bb, 0x222222, 0xaa6644]; for (let i = 0; i < 10; i++) { c.globalAlpha = .85; c.fillStyle = "#" + gc[i % gc.length].toString(16).padStart(6, "0"); const x = S * (.1 + (i / 9) * .8), y = S * (.35 + Math.sin(i * 1.3) * .15); c.beginPath(); c.rect(x - 18, y - 28, 36, 56); c.fill(); c.beginPath(); c.ellipse(x - 22, y - 10, 10, 16, -.4, 0, Math.PI * 2); c.fill(); } c.globalAlpha = 1;
+      } else if (id === "5a") {
+        c.fillStyle = "#e8e8e0"; c.fillRect(0, 0, S, S); c.globalAlpha = .6; c.fillStyle = "#d0d8c0"; c.beginPath(); c.ellipse(S * .5, S * .45, S * .38, S * .32, 0, 0, Math.PI * 2); c.fill(); c.globalAlpha = .7; c.strokeStyle = "#8a6030"; c.lineWidth = 6;[[.3, .25, .6, .55], [.45, .2, .55, .65], [.2, .45, .65, .38], [.35, .3, .5, .7]].forEach(([x1, y1, x2, y2]) => { c.beginPath(); c.moveTo(x1 * S, y1 * S); c.lineTo(x2 * S, y2 * S); c.stroke(); }); c.globalAlpha = 1;
+      } else if (id === "5b") {
+        c.fillStyle = "#384838"; c.fillRect(0, 0, S, S); c.globalAlpha = .8; c.strokeStyle = "#5a7058"; c.lineWidth = 10;[[.2, .12, .18, .76], [.45, .08, .24, .78], [.72, .12, .18, .72]].forEach(([x, y, w, h]) => { c.strokeRect(x * S, y * S, w * S, h * S); }); c.globalAlpha = 1;
+      } else if (id === "6a") {
+        c.fillStyle = "#b0c0d0"; c.fillRect(0, 0, S, S);["#d0a0c8", "#70a8c0", "#c8c050", "#8090c0", "#a0b878", "#d88080"].forEach(col => { c.globalAlpha = .45; c.fillStyle = col; c.fillRect(Math.random() * S * .6, Math.random() * S * .6, S * .3 + Math.random() * S * .3, S * .2 + Math.random() * S * .3); }); c.globalAlpha = .55; c.fillStyle = "#a0b020"; c.font = `bold ${S * .12}px sans-serif`; c.fillText("TO", S * .55, S * .5); c.fillText("ARE", S * .25, S * .65); c.globalAlpha = 1;
+      } else if (id === "6b") {
+        c.fillStyle = "#e8e8e8"; c.fillRect(0, 0, S, S);["#282828", "#404040", "#303030", "#505050", "#202020", "#383838"].forEach((col, i) => { c.globalAlpha = .65 + Math.random() * .2; c.fillStyle = col; const y = S * (.08 + i / 5 * .76), h = S * (.07 + Math.random() * .06); c.beginPath(); c.moveTo(S * (Math.random() * .1), y); c.lineTo(S * (.9 + Math.random() * .1), y + (Math.random() - .5) * 20); c.lineTo(S * (.85 + Math.random() * .15), y + h); c.lineTo(S * (Math.random() * .1), y + h + (Math.random() - .5) * 15); c.closePath(); c.fill(); }); c.globalAlpha = 1;
+      } else if (["7a", "7b", "7c"].includes(id)) {
+        const base = id === "7b" ? "#1a3018" : id === "7c" ? "#2a1810" : "#202818"; c.fillStyle = base; c.fillRect(0, 0, S, S); for (let i = 0; i < 60; i++) { c.globalAlpha = .3 + Math.random() * .4; c.strokeStyle = p.st[i % p.st.length]; c.lineWidth = 3 + Math.random() * 14; c.beginPath(); c.moveTo(Math.random() * S, Math.random() * S); c.quadraticCurveTo(Math.random() * S, Math.random() * S, Math.random() * S, Math.random() * S); c.stroke(); } c.globalAlpha = .4; c.strokeStyle = "#e0e0d0"; c.lineWidth = 2; for (let i = 0; i < 8; i++) { c.beginPath(); c.moveTo(Math.random() * S, Math.random() * S); c.lineTo(Math.random() * S, Math.random() * S); c.stroke(); } c.globalAlpha = 1;
+      } else if (id === "7d") {
+        c.fillStyle = "#c02818"; c.fillRect(0, 0, S, S); c.globalAlpha = .8; c.fillStyle = "#205878"; c.beginPath(); c.moveTo(0, 0); c.lineTo(S * .35, 0); c.lineTo(S, S * .65); c.lineTo(S, S); c.lineTo(S * .6, S); c.lineTo(0, S * .3); c.closePath(); c.fill(); c.globalAlpha = .9; c.fillStyle = "#f0f0f0"; c.beginPath(); c.moveTo(S * .3, S * .25); c.lineTo(S * .65, S * .3); c.lineTo(S * .6, S * .75); c.lineTo(S * .25, S * .72); c.closePath(); c.fill(); c.globalAlpha = 1;
+      } else if (id === "8") {
+        c.fillStyle = "#d0c8b8"; c.fillRect(0, 0, S, S); c.globalAlpha = .85;
+        const blob = (cx, cy, rx, ry, n) => { for (let i = 0; i < n; i++) { const a = Math.random() * Math.PI * 2, r = Math.sqrt(Math.random()); const x = cx + Math.cos(a) * rx * r, y = cy + Math.sin(a) * ry * r; c.fillStyle = Math.random() > .15 ? "#181810" : "#080800"; c.beginPath(); c.arc(x, y, 2 + Math.random() * 2, 0, Math.PI * 2); c.fill(); } };
+        blob(S * .3, S * .32, S * .22, S * .2, 3000); blob(S * .65, S * .65, S * .18, S * .16, 2000); c.globalAlpha = 1;
+      }
+      if (!["4", "5a"].includes(id)) { c.globalAlpha = .85; c.fillStyle = "#8b2012"; c.fillRect(S * .80, S * .78, S * .09, S * .09); c.globalAlpha = 1; }
+      const t = new THREE.CanvasTexture(cv); t.encoding = THREE.sRGBEncoding; TC.set(id, t); return t;
+    }
+
+    // ════════════════════════════════════════════════════════════════
+    // SCENE
+    // ════════════════════════════════════════════════════════════════
+    let camera, scene, renderer, paintings = [];
+
+    function init() {
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x0d0b08);
+      scene.fog = new THREE.FogExp2(0x0d0b08, 0.026);
+
+      camera = new THREE.PerspectiveCamera(68, innerWidth / innerHeight, 0.1, 80);
+      // Start in left room facing east into gallery
+      camera.position.set(LX0 + 1.5, 1.65, lCZ + 1.0);
+      yaw = 0; // face east
+
+      renderer = new THREE.WebGLRenderer({ canvas: document.getElementById("c"), antialias: true });
+      renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+      renderer.setSize(innerWidth, innerHeight);
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+      buildScene();
+      placePaintings();
+      animate();
+      window.addEventListener("resize", () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
+    }
+
+    // ── BUILD HELPERS ─────────────────────────────────────────────
+    function B(x, y, z, w, h, d, m) { const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m); mesh.position.set(x, y, z); mesh.receiveShadow = mesh.castShadow = true; scene.add(mesh); return mesh; }
+    function W(x, z, w, d, m) { B(x, WALL_H / 2, z, w, WALL_H, d, m); }
+    function diagWall(x0, z0, x1, z1, m) {
+      const cx = (x0 + x1) / 2, cz = (z0 + z1) / 2, dx = x1 - x0, dz = z1 - z0;
+      const len = Math.sqrt(dx * dx + dz * dz), ang = Math.atan2(dx, dz);
+      const mesh = new THREE.Mesh(new THREE.BoxGeometry(T, WALL_H, len), m);
+      mesh.position.set(cx, WALL_H / 2, cz); mesh.rotation.y = ang;
+      mesh.receiveShadow = mesh.castShadow = true; scene.add(mesh);
+    }
+
+    function buildScene() {
+      const fM = new THREE.MeshStandardMaterial({ color: 0x2a1e12, roughness: 0.92 });
+      const wM = new THREE.MeshStandardMaterial({ color: 0xeae4d8, roughness: 0.95 });
+      const cM = new THREE.MeshStandardMaterial({ color: 0xd8d2c4, roughness: 1.0 });
+      const bM = new THREE.MeshStandardMaterial({ color: 0x181008, roughness: 0.9 });
+      const pM = new THREE.MeshStandardMaterial({ color: 0xe2dcd0, roughness: 0.95 });
+
+      // ── FLOORS ────────────────────────────────────────────────
+      B(lCX, 0, lCZ, LX1 - LX0, 0.08, LZS - LZN, fM);            // left room
+      B(mCX, 0, mCZ, MX1 - MX0, 0.08, MZS - MZN, fM);            // main hall
+      // Transition wedge (triangle between diagonal and corners) — fill with floor
+      B((LX1 + MX0) / 2, 0, (LZN + MZN) / 2, MX0 - LX1 + 0.5, 0.08, LZN - MZN + 0.5, fM);
+      // Baseboard
+      B(mCX, 0.12, mCZ, MX1 - MX0 - 0.1, 0.18, MZS - MZN - 0.1, bM);
+
+      // ── CEILINGS ──────────────────────────────────────────────
+      B(lCX, WALL_H, lCZ, LX1 - LX0, 0.08, LZS - LZN, cM);
+      B(mCX, WALL_H, mCZ, MX1 - MX0, 0.08, MZS - MZN, cM);
+      B((LX1 + MX0) / 2, WALL_H, (LZN + MZN) / 2, MX0 - LX1 + 0.5, 0.08, LZN - MZN + 0.5, cM);
+
+      // ══════════════════════════════════════════════════════════
+      // OUTER WALLS — matching the sketch shape exactly
+      // ══════════════════════════════════════════════════════════
+
+      // LEFT ROOM: west wall (full height of left room, with door opening carved out visually)
+      // South portion of west wall
+      W(LX0 - T / 2, (LZN + 3.6 + LZS) / 2, T, LZS - (LZN + 3.6) + T * 2, wM);
+      // North portion of west wall (above door)
+      W(LX0 - T / 2, (LZN + LZN + 2.5) / 2, T, 2.5, wM);
+      // Door lintel
+      B(LX0 - T / 2, WALL_H - 0.45, LZN + 2.1, T, 0.9, 1.4, wM);
+      // Door frame sides (thin dark strips)
+      const drM = new THREE.MeshStandardMaterial({ color: 0x181008, roughness: 0.8 });
+      B(LX0 - T / 2, WALL_H * 0.42, LZN + 1.45, T + 0.04, WALL_H * 0.84, 0.12, drM);
+      B(LX0 - T / 2, WALL_H * 0.42, LZN + 2.75, T + 0.04, WALL_H * 0.84, 0.12, drM);
+
+      // LEFT ROOM: north wall
+      W(lCX, LZN - T / 2, LX1 - LX0 + T * 2, T, wM);
+
+      // LEFT ROOM: south wall — from LX0 to STEP_X
+      W((LX0 + STEP_X) / 2, LZS + T / 2, STEP_X - LX0 + T, T, wM);
+      // Small step-window indicator on south wall (the little rect in sketch near SE corner)
+      const winM2 = new THREE.MeshStandardMaterial({ color: 0x6080a0, roughness: 0.2, transparent: true, opacity: 0.3 });
+      B((LX0 + STEP_X) / 2 - 0.5, 1.5, LZS + T / 2, 1.1, 0.7, T + 0.04, winM2);
+
+      // STEP: vertical wall connecting left room south to main hall south
+      W(STEP_X + T / 2, (LZS + MZS) / 2, T, LZS - MZS + T, wM);
+
+      // MAIN HALL: south wall (from STEP_X east to MX1)
+      W((STEP_X + MX1) / 2, MZS + T / 2, MX1 - STEP_X + T, T, wM);
+
+      // MAIN HALL: east wall
+      W(MX1 + T / 2, (MZN + MZS) / 2, T, MZS - MZN + T * 2, wM);
+
+      // DIAGONAL WALL — upper-right of left room to upper-left of main hall
+      // Goes from (LX1, LZN) → (MX0, MZN)
+      diagWall(LX1, LZN, MX0, MZN, wM);
+
+      // LEFT ROOM: east wall — south portion below diagonal junction
+      // Diagonal hits left room east at LZN; east wall runs from there south to LZS
+      //W(LX1+T/2,(MZN+LZS)/2,T,LZS-MZN+T,wM);
+
+      // MAIN HALL: north wall — west of bathroom and east of bathroom
+      W((MX0 + BTH_X0) / 2, MZN - T / 2, BTH_X0 - MX0, T, wM);
+      W((BTH_X1 + MX1) / 2, MZN - T / 2, MX1 - BTH_X1, T, wM);
+
+      // Small window on left room west wall (south portion, visible from inside)
+      const winM = new THREE.MeshStandardMaterial({ color: 0x8090a0, roughness: 0.2, metalness: 0.1, transparent: true, opacity: 0.4 });
+      B(LX0, 1.75, lCZ + 2.0, T + 0.04, 0.85, 0.6, winM);
+
+      // ══════════════════════════════════════════════════════════
+      // BATHROOM (enclosed on north wall)
+      // ══════════════════════════════════════════════════════════
+      W(BTH_X0 - T / 2, (BTH_ZN + BTH_ZS) / 2, T, BTH_ZS - BTH_ZN + T, wM); // west
+      W(BTH_X1 + T / 2, (BTH_ZN + BTH_ZS) / 2, T, BTH_ZS - BTH_ZN + T, wM); // east
+      // South wall with door opening (west side of south wall)
+      const bDoorX = BTH_X0 + 0.9, bDoorW = 1.1;
+      // Left of door
+      W(BTH_X0 + (bDoorX - bDoorW / 2 - BTH_X0) / 2, BTH_ZS + T / 2, bDoorX - bDoorW / 2 - BTH_X0, T, wM);
+      // Right of door
+      W(bDoorX + bDoorW / 2 + (BTH_X1 - (bDoorX + bDoorW / 2)) / 2, BTH_ZS + T / 2, BTH_X1 - (bDoorX + bDoorW / 2), T, wM);
+      B(bDoorX, WALL_H - 0.42, BTH_ZS + T / 2, bDoorW, 0.84, T, wM); // lintel
+
+      // ══════════════════════════════════════════════════════════
+      // CASEY PARTITION BOX (freestanding)
+      // ══════════════════════════════════════════════════════════
+      const cx0 = CAS_X - CAS_W / 2, cx1 = CAS_X + CAS_W / 2;
+      const cz0 = CAS_Z - CAS_D / 2, cz1 = CAS_Z + CAS_D / 2; W(CAS_X, cz0 - T / 2, CAS_W + T * 2, T, pM); // north
+      W(CAS_X, cz1 + T / 2, CAS_W + T * 2, T, pM); // south
+      W(cx0 - T / 2, CAS_Z, T, CAS_D, pM);     // west
+      // East wall with slot opening
+      const opening = 0.6; // size of gap
+
+W(cx1+T/2, CAS_Z - opening/2, T, (CAS_D - opening)/2, pM);
+W(cx1+T/2, CAS_Z + opening/2, T, (CAS_D - opening)/2, pM);
+
+      // Interior display rods (the two vertical marks inside box in sketch)
+      const rodM = new THREE.MeshStandardMaterial({ color: 0xb0a898, roughness: 0.5 });
+      B(CAS_X - 0.35, 0.65, CAS_Z, 0.06, 1.3, 0.06, rodM);
+      B(CAS_X + 0.35, 0.65, CAS_Z, 0.06, 1.3, 0.06, rodM);
+
+      // ══════════════════════════════════════════════════════════
+      // RIGHT DIVIDER WALL (vertical panel, gaps at top and bottom)
+      // ══════════════════════════════════════════════════════════
+      W(DIV_X, (DIV_ZN + DIV_ZS) / 2, T + 0.06, DIV_ZS - DIV_ZN, wM);
+
+      // ══════════════════════════════════════════════════════════
+      // LIGHTING
+      // ══════════════════════════════════════════════════════════
+      scene.add(new THREE.AmbientLight(0xfff5e0, 0.8));
+      const fm = new THREE.MeshStandardMaterial({ color: 0xf0e8d0, emissive: 0xfff0c0, emissiveIntensity: 1.3 });
+
+      [
+        [lCX, lCZ - 1.5], [lCX, lCZ + 1.5],           // left room
+        [mCX - 7, mCZ - 1], [mCX - 7, mCZ + 1],           // main hall west
+        [mCX - 2, mCZ - 1], [mCX - 2, mCZ + 1],           // main hall centre
+        [mCX + 4, mCZ - 1], [mCX + 4, mCZ + 1],           // main hall east
+        [mCX + 9, mCZ],                            // right section
+        [(BTH_X0 + BTH_X1) / 2, (BTH_ZN + BTH_ZS) / 2], // bathroom
+      ].forEach(([x, z]) => {
+        const s = new THREE.SpotLight(0xfff8e8, 3.2, 18, Math.PI / 4.2, .45, 1.2);
+        s.position.set(x, WALL_H - .2, z); s.castShadow = true; s.shadow.mapSize.set(512, 512);
+        s.target.position.set(x, 0, z); scene.add(s); scene.add(s.target);
+        const d = new THREE.Mesh(new THREE.CylinderGeometry(.06, .10, .05, 12), fm);
+        d.position.set(x, WALL_H - .03, z); scene.add(d);
+      });
+
+      // Track lights targeting south wall
+      [-7, -4.5, -2, 0.5, 3, 5.5, 8, 10, 12].forEach(tx => {
+        const t = new THREE.SpotLight(0xfff0d0, 2.0, 9, Math.PI / 6, .3, 1.5);
+        t.position.set(tx, WALL_H - .3, MZS - .7); t.castShadow = false;
+        t.target.position.set(tx, 1.7, MZS - .05); scene.add(t); scene.add(t.target);
+      });
+    }
+
+    // ════════════════════════════════════════════════════════════════
+    // ARTWORK PLACEMENT
+    // ════════════════════════════════════════════════════════════════
+    const frameMat = new THREE.MeshStandardMaterial({ color: 0x5a5448, roughness: 0.5, metalness: 0.15 });
+
+    function addP(x, y, z, ry, id, pw, ph) {
+      pw = pw || 0.85; ph = ph || 0.75;
+      const a = ARTWORKS.find(d => d.id === id) || ARTWORKS[0];
+      const g = new THREE.Group(); g.position.set(x, y, z); g.rotation.y = ry;
+      g.add(Object.assign(new THREE.Mesh(new THREE.BoxGeometry(pw + .07, ph + .07, .03), frameMat), { castShadow: true }));
+      const mt = new THREE.Mesh(new THREE.BoxGeometry(pw + .01, ph + .01, .022), new THREE.MeshStandardMaterial({ color: 0xf5f0e8, roughness: 1 }));
+      mt.position.z = .007; g.add(mt);
+      const cm = new THREE.MeshStandardMaterial({ color: a.color || 0xaaaaaa, roughness: .65 });
+      const cv2 = new THREE.Mesh(new THREE.BoxGeometry(pw - .03, ph - .03, .018), cm);
+      cv2.position.z = .016; g.add(cv2);
+      cm.map = mkTex(id); cm.color = new THREE.Color(0xffffff); cm.needsUpdate = true;
+      g.userData = { isPainting: true, ...a }; scene.add(g); paintings.push(g); return g;
+    }
+
+    function addGlove(x, y, z, ry, id) {
+      const a = ARTWORKS.find(d => d.id === id) || ARTWORKS[0];
+      const g = new THREE.Group(); g.position.set(x, y, z); g.rotation.y = ry;
+      g.add(new THREE.Mesh(new THREE.BoxGeometry(2.0, 1.2, .01), new THREE.MeshStandardMaterial({ color: 0xf0f0ee, roughness: .95 })));
+      const gc = [0x555555, 0xcc88aa, 0x3366aa, 0x4488bb, 0x222222, 0xaa6644];
+      for (let i = 0; i < 10; i++) { const gm = new THREE.MeshStandardMaterial({ color: gc[i % gc.length], roughness: .85 }); const gp = new THREE.Mesh(new THREE.BoxGeometry(.10, .16, .014), gm); gp.position.set((Math.random() - .5) * 1.6, (Math.random() - .5) * .8, .013); gp.rotation.z = (Math.random() - .5) * .7; g.add(gp); }
+      g.userData = { isPainting: true, ...a }; scene.add(g); paintings.push(g); return g;
+    }
+
+    function placePaintings() {
+      const WO = 0.08, EH = 1.85;
+
+      // 1. Magnus "Manton De" — LEFT ROOM, west wall
+      addP(LX0 + WO, EH, lCZ - 0.5, Math.PI / 2, "1", 0.65, 0.88);
+
+      // 2a. Casey "Summer 1" — Casey box, east wall (inside)
+      addP(CAS_X+CAS_W/2-WO, EH, CAS_Z, -Math.PI/2, "2a", 0.6, 0.6);
+      // 2b. Casey "Summer 100" — Casey box, north wall
+      addP(CAS_X, EH, CAS_Z-CAS_D/2+WO, 0, "2b", 0.6, 0.6);      
+      // 2c. Casey "Raft 3" — west of Casey box, left room area
+      addP(CAS_X - CAS_W / 2 - 0.5, EH + 0.1, CAS_Z - 0.3, Math.PI / 2, "2c", 0.65, 0.82);
+
+      // 3a. Rohen Jones "Untitled" — NORTH wall, left of bathroom
+      addP(MX0 + 2.8, EH, MZN + WO, Math.PI, "3a", 0.88, 0.68);
+      // 3b. Rohen Jones "People I Don't Know" — NORTH wall, right of 3a
+      addP(MX0 + 5.2, EH, MZN + WO, Math.PI, "3b", 0.95, 0.74);
+      // 3c. Rohen Jones "Man Pushing Thru" — inside BATHROOM south wall
+      addP((BTH_X0 + BTH_X1) / 2 - 0.3, EH, BTH_ZS - WO, 0, "3c", 0.65, 0.90);
+      // 3d. Casey "Raft 3" variant — NORTH wall right of bathroom
+      addP(BTH_X1 + 2.2, EH, MZN + WO, Math.PI, "3d", 0.78, 0.65);
+
+      // 4. Faye "Dear Glove" — angled installation near bathroom entrance (diagonal in sketch)
+      // Mount at angle matching the diagonal element shown
+      addGlove(BTH_X0 - 1.8, EH, MZN + 1.8, Math.PI * 0.78, "4");
+
+      // 5a. Jonah "Suspended Cloud" — SOUTH wall, 1st piece (large, leftmost)
+      addP(STEP_X + 2.0, EH + 0.2, MZS - WO, 0, "5a", 1.1, 0.95);
+      // 6b. Winnie "Of Time" — SOUTH wall 2nd
+      addP(STEP_X + 4.8, EH, MZS - WO, 0, "6b", 0.78, 0.65);
+      // 5b. Jonah "Untitled" — SOUTH wall 3rd
+      addP(STEP_X + 7.0, EH, MZS - WO, 0, "5b", 0.75, 0.70);
+      // 7a–7d Timothy Zhang — SOUTH wall 4–7
+      addP(STEP_X + 9.0, EH, MZS - WO, 0, "7a", 0.72, 0.86);
+      addP(STEP_X + 10.8, EH, MZS - WO, 0, "7b", 0.72, 0.86);
+      addP(STEP_X + 12.6, EH, MZS - WO, 0, "7c", 0.72, 0.86);
+      addP(STEP_X + 14.3, EH, MZS - WO, 0, "7d", 0.70, 0.90);
+
+      // 6a. Winnie "Dragonfly Touches Water" — LEFT ROOM south wall
+      addP((LX0 + STEP_X) / 2 - 0.2, EH, LZS - WO, 0, "6a", 0.88, 0.65);
+
+      // 8. Isaac Ball "PARADE!" — RIGHT DIVIDER, two pieces on west-facing side
+      addP(DIV_X - WO, EH + 0.45, mCZ - 1.0, -Math.PI / 2, "8", 1.25, 1.1);
+      addP(DIV_X - WO, EH - 0.2, mCZ + 0.65, -Math.PI / 2, "8", 1.0, 0.9);
+    }
+
+    // ════════════════════════════════════════════════════════════════
+    // CONTROLS
+    // ════════════════════════════════════════════════════════════════
+    const keys = {};
+    let yaw = 0, pitch = 0, dragging = false, speed = 0.065;
+    const lastM = { x: 0, y: 0 }, touch0 = { x: 0, y: 0 }; let touching = false;
+
+    window.addEventListener("keydown", e => { keys[e.code] = true; if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.code)) e.preventDefault(); });
+    window.addEventListener("keyup", e => { keys[e.code] = false; });
+    window.addEventListener("mousedown", e => { dragging = true; lastM.x = e.clientX; lastM.y = e.clientY; });
+    window.addEventListener("mouseup", () => dragging = false);
+    window.addEventListener("mousemove", e => { if (!dragging) return; yaw -= (e.clientX - lastM.x) * .0025; pitch -= (e.clientY - lastM.y) * .0025; pitch = Math.max(-1.1, Math.min(1.1, pitch)); lastM.x = e.clientX; lastM.y = e.clientY; });
+    window.addEventListener("wheel", e => { speed = Math.max(.02, Math.min(.25, speed - e.deltaY * .0001)); }, { passive: true });
+    window.addEventListener("touchstart", e => { touching = true; touch0.x = e.touches[0].clientX; touch0.y = e.touches[0].clientY; }, { passive: true });
+    window.addEventListener("touchmove", e => { if (!touching) return; yaw -= (e.touches[0].clientX - touch0.x) * .004; pitch -= (e.touches[0].clientY - touch0.y) * .004; pitch = Math.max(-1.1, Math.min(1.1, pitch)); touch0.x = e.touches[0].clientX; touch0.y = e.touches[0].clientY; }, { passive: true });
+    window.addEventListener("touchend", () => touching = false);
+
+    // ════════════════════════════════════════════════════════════════
+    // COLLISION
+    // ════════════════════════════════════════════════════════════════
+    const PR = 0.35;
+    function ab(cx, cz, w, d) { return { mnX: cx - w / 2 - PR, mxX: cx + w / 2 + PR, mnZ: cz - d / 2 - PR, mxZ: cz + d / 2 + PR }; }
+    const WALLS = [
+      // Left room perimeter
+      ab(LX0 - T / 2, lCZ, T, LZS - LZN + T * 2),
+      ab(lCX, LZN - T / 2, LX1 - LX0 + T * 2, T),
+      ab((LX0 + STEP_X) / 2, LZS + T / 2, STEP_X - LX0 + T, T),
+
+      // Step
+      ab(STEP_X + T / 2, (LZS + MZS) / 2, T, LZS - MZS + T),
+      // Main hall
+      ab((STEP_X + MX1) / 2, MZS + T / 2, MX1 - STEP_X + T, T),
+      ab(MX1 + T / 2, (MZN + MZS) / 2, T, MZS - MZN + T * 2),
+      ab((MX0 + BTH_X0) / 2, MZN - T / 2, BTH_X0 - MX0, T),
+      ab((BTH_X1 + MX1) / 2, MZN - T / 2, MX1 - BTH_X1, T),
+      // Bathroom
+      ab(BTH_X0 - T / 2, (BTH_ZN + BTH_ZS) / 2, T, BTH_ZS - BTH_ZN + T),
+      ab(BTH_X1 + T / 2, (BTH_ZN + BTH_ZS) / 2, T, BTH_ZS - BTH_ZN + T),
+      ab((BTH_X0 + BTH_X1) / 2, BTH_ZS + T / 2, BTH_X1 - BTH_X0, T),
+      // Casey box
+      ab(CAS_X, CAS_Z - CAS_D / 2 - T / 2, CAS_W + T * 2, T),
+      ab(CAS_X, CAS_Z + CAS_D / 2 + T / 2, CAS_W + T * 2, T),
+      ab(CAS_X - CAS_W / 2 - T / 2, CAS_Z, T, CAS_D),
+      ab(CAS_X + CAS_W / 2 + T / 2, CAS_Z - (CAS_D - .85) / 4, T, (CAS_D - .85) / 2),
+      ab(CAS_X + CAS_W / 2 + T / 2, CAS_Z + (CAS_D - .85) / 4, T, (CAS_D - .85) / 2),
+      // Divider
+      ab(DIV_X, (DIV_ZN + DIV_ZS) / 2, T + 0.1, DIV_ZS - DIV_ZN),
+    ];
+
+    function resolveCollisions(p) {
+      p.y = 1.65;
+      p.x = Math.max(LX0 - .2, Math.min(MX1 + .2, p.x));
+      p.z = Math.max(LZN - .2, Math.min(LZS + .2, p.z));
+      WALLS.forEach(b => {
+        if (p.x > b.mnX && p.x < b.mxX && p.z > b.mnZ && p.z < b.mxZ) {
+          const dL = p.x - b.mnX, dR = b.mxX - p.x, dF = p.z - b.mnZ, dB = b.mxZ - p.z;
+          const m = Math.min(dL, dR, dF, dB);
+          if (m === dL) p.x = b.mnX; else if (m === dR) p.x = b.mxX; else if (m === dF) p.z = b.mnZ; else p.z = b.mxZ;
+        }
+      });
+    }
+
+    // ════════════════════════════════════════════════════════════════
+    // MINIMAP  — accurately shows the L-shaped floor plan
+    // ════════════════════════════════════════════════════════════════
+    const mmCv = document.getElementById("mm");
+    const mmCtx = mmCv.getContext("2d");
+    const MMW = 240, MMH = 100;
+    // Scale to fit building in minimap canvas
+    const bldW = MX1 - LX0, bldH = LZS - LZN;
+    const scX = (MMW - 16) / bldW, scY = (MMH - 16) / bldH;
+    const SC2 = Math.min(scX, scY);
+    const OX2 = 8, OY2 = 8;
+    function w2mm(wx, wz) { return [OX2 + (wx - LX0) * SC2, OY2 + (wz - LZN) * SC2]; }
+    function mmRect(x0, z0, x1, z1) { const [px0, py0] = w2mm(x0, z0), [px1, py1] = w2mm(x1, z1); mmCtx.strokeRect(px0, py0, px1 - px0, py1 - py0); }
+
+    function drawMinimap() {
+      mmCtx.fillStyle = "rgba(13,11,8,.96)"; mmCtx.fillRect(0, 0, MMW, MMH);
+
+      // Draw building outline as filled polygon first (the L-shape + diagonal)
+      mmCtx.fillStyle = "rgba(40,32,22,0.8)";
+      mmCtx.beginPath();
+      const [alx, alz] = w2mm(LX0, LZN);  // left room NW
+      const [blx, blz] = w2mm(LX1, LZN);  // left room NE (top of diagonal)
+      const [clx, clz] = w2mm(MX0, MZN);  // main hall NW (bottom of diagonal)
+      const [dlx, dlz] = w2mm(MX1, MZN);  // main hall NE
+      const [elx, elz] = w2mm(MX1, MZS);  // main hall SE
+      const [flx, flz] = w2mm(STEP_X, MZS); // south step
+      const [glx, glz] = w2mm(STEP_X, LZS); // step down
+      const [hlx, hlz] = w2mm(LX0, LZS);  // left room SW
+      mmCtx.moveTo(alx, alz); mmCtx.lineTo(blx, blz); mmCtx.lineTo(clx, clz);
+      mmCtx.lineTo(dlx, dlz); mmCtx.lineTo(elx, elz); mmCtx.lineTo(flx, flz);
+      mmCtx.lineTo(glx, glz); mmCtx.lineTo(hlx, hlz); mmCtx.closePath();
+      mmCtx.fill();
+
+      // Outline rooms
+      mmCtx.strokeStyle = "rgba(201,168,76,.6)"; mmCtx.lineWidth = 1;
+      // Left room
+      mmRect(LX0, LZN, LX1, LZS);
+      // Main hall
+      mmRect(MX0, MZN, MX1, MZS);
+      // Diagonal line
+      mmCtx.beginPath(); mmCtx.moveTo(blx, blz); mmCtx.lineTo(clx, clz); mmCtx.stroke();
+      // Step
+      const [sx0, sz0] = w2mm(STEP_X, MZS), [sx1, sz1] = w2mm(STEP_X, LZS);
+      mmCtx.beginPath(); mmCtx.moveTo(sx0, sz0); mmCtx.lineTo(sx1, sz1); mmCtx.stroke();
+
+      // Bathroom box
+      mmCtx.strokeStyle = "rgba(201,168,76,.35)"; mmCtx.lineWidth = 0.8;
+      mmRect(BTH_X0, BTH_ZN, BTH_X1, BTH_ZS);
+      // Casey partition
+      mmCtx.setLineDash([2, 3]);
+      mmRect(CAS_X - CAS_W / 2, CAS_Z - CAS_D / 2, CAS_X + CAS_W / 2, CAS_Z + CAS_D / 2);
+      mmCtx.setLineDash([]);
+      // Divider wall
+      const [dx0, dz0] = w2mm(DIV_X, DIV_ZN), [, dz1] = w2mm(DIV_X, DIV_ZS);
+      mmCtx.strokeStyle = "rgba(201,168,76,.4)";
+      mmCtx.beginPath(); mmCtx.moveTo(dx0, dz0); mmCtx.lineTo(dx0, dz1); mmCtx.stroke();
+
+      // Painting dots
+      mmCtx.fillStyle = "rgba(201,168,76,.45)";
+      paintings.forEach(p => { const [px, py] = w2mm(p.position.x, p.position.z); mmCtx.beginPath(); mmCtx.arc(px, py, 1.8, 0, Math.PI * 2); mmCtx.fill(); });
+
+      if (!camera) return;
+      const [cpx, cpy] = w2mm(camera.position.x, camera.position.z);
+      const cy2 = Math.atan2(-camera.quaternion.y, camera.quaternion.w) * 2;
+      mmCtx.strokeStyle = "rgba(201,168,76,.9)"; mmCtx.lineWidth = 0.8;
+      mmCtx.beginPath(); mmCtx.moveTo(cpx, cpy); mmCtx.lineTo(cpx + Math.sin(-cy2) * 9, cpy + Math.cos(-cy2) * 9); mmCtx.stroke();
+      mmCtx.fillStyle = "#c9a84c"; mmCtx.beginPath(); mmCtx.arc(cpx, cpy, 2.5, 0, Math.PI * 2); mmCtx.fill();
+    }
+
+    // ════════════════════════════════════════════════════════════════
+    // ANIMATION LOOP
+    // ════════════════════════════════════════════════════════════════
+    const _dir = new THREE.Vector3(), _right = new THREE.Vector3();
+    function animate() {
+      requestAnimationFrame(animate);
+      camera.quaternion.setFromEuler(new THREE.Euler(pitch, yaw, 0, "YXZ"));
+      camera.getWorldDirection(_dir); _dir.y = 0; _dir.normalize();
+      _right.crossVectors(_dir, new THREE.Vector3(0, 1, 0)).normalize();
+      if (keys["ArrowUp"] || keys["KeyW"]) camera.position.addScaledVector(_dir, speed);
+      if (keys["ArrowDown"] || keys["KeyS"]) camera.position.addScaledVector(_dir, -speed);
+      if (keys["ArrowLeft"] || keys["KeyA"]) camera.position.addScaledVector(_right, -speed);
+      if (keys["ArrowRight"] || keys["KeyD"]) camera.position.addScaledVector(_right, speed);
+      resolveCollisions(camera.position);
+
+      let closest = null, minD = 2.8;
+      paintings.forEach(p => { const d = camera.position.distanceTo(p.position); if (d < minD) { minD = d; closest = p; } });
+      const info = document.getElementById("info");
+      if (closest) {
+        document.getElementById("info-title").textContent = closest.userData.title || "—";
+        document.getElementById("info-medium").textContent = closest.userData.medium || "—";
+        document.getElementById("info-artist").textContent = closest.userData.artist || "";
+        document.getElementById("info-price").textContent = closest.userData.price || "";
+        info.classList.add("show");
+      } else info.classList.remove("show");
+
+      drawMinimap();
+      renderer.render(scene, camera);
+    }
+
+    // ════════════════════════════════════════════════════════════════
+    // ENTRY
+    // ════════════════════════════════════════════════════════════════
+    document.getElementById("enterBtn").addEventListener("click", () => {
+      document.getElementById("menu").classList.add("hidden");
+      document.getElementById("gallery").classList.add("visible");
+      document.getElementById("hud").classList.add("visible");
+      document.getElementById("minimap").classList.add("visible");
+    });
+    init();
+  </script>
+</body>
+
 </html>
