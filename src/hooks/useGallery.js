@@ -106,7 +106,7 @@ function buildGeometry(scene) {
 
 
   // Casey
-  // Small pedestal for 3a
+  // Small pedestal 
   const baseSize = 0.8
   const baseH = 1.0
 
@@ -119,7 +119,7 @@ function buildGeometry(scene) {
 
 //  Lighting 
 function buildLights(scene) {
-  scene.add(new THREE.AmbientLight(0xfff5e0, 0.8))
+  scene.add(new THREE.AmbientLight(0xfff5e0, 1.2))
   const ceilPos = [
     [lCX, lCZ - 1.5], [lCX, lCZ + 1.5],
     [mCX - 7, mCZ - 1], [mCX - 7, mCZ + 1],
@@ -236,10 +236,9 @@ function placePaintings(scene, rendererRef) {
   return [
     P(LX0 + WO, 2.08, lCZ, Math.PI / 2, '1', 4.95, 2.78),
     P(CAS_X + CAS_W / 2 - WO, EH - 0.5, CAS_Z, -Math.PI / 2, '2a', 0.6, 0.6),
-    P(MX0 + 2.8, EH, MZN + WO, 0, '3a', 1.18, 0.68),
-    P(MX0 + 5.2, EH, MZN + WO, 0, '3b', 0.95, 0.74),
-    P(BTH_X0 + 2.2, EH, BTH_ZS - WO, 0, '3c', 0.65, 0.90),
-    P(BTH_X1 + 2.2, EH, MZN + WO, 0, '3d', 0.78, 0.65),
+    P(MX0 + 1.0, EH, MZN + WO, 0, '3a', 1.18, 0.68),
+    P(MX0 + 4.2, EH, MZN + WO, 0, '3b', 3.4, 2.9),
+    P((BTH_X0 + BTH_X1) / 2, EH, BTH_ZN + 3.55, 0, '3c', 0.65, 0.95),
     G(BTH_X0 - 1.8, EH, MZN + 1.8, Math.PI * 0.78, '4'),
     P(STEP_X + 1.55, 1.45, MZS - WO, Math.PI, '5a', 2.35, 1.78),
     P(STEP_X + 4.55, EH, MZS - WO, Math.PI, '6b', 0.78, 0.65),
@@ -249,7 +248,7 @@ function placePaintings(scene, rendererRef) {
     P(STEP_X + 12.15, EH, MZS - WO, Math.PI, '7c', 0.90, 1.24),
     P(STEP_X + 13.85, EH, MZS - WO, Math.PI, '7d', 0.76, 1.42),
     P((LX0 + STEP_X) / 2 - 0.2, EH, LZS - WO, Math.PI, '6a', 1.7, 0.88),
-    P(DIV_X - 0.15, 2.02, mCZ, -Math.PI / 2, '8', 3.1, 2.4),
+    P(DIV_X - 0.15, 2.02, mCZ + 1.5, -Math.PI / 2, '8', 3.1, 2.4),
   ]
 }
 

@@ -34,5 +34,5 @@ export const ARTWORK_IMAGE_URLS = {
   '7b': '/artworks/timothy-zhang-ghost-of-fear.png',
   '7c': '/artworks/timothy-zhang-untitled.png',
   '7d': '/artworks/timothy-zhang-the-joke.png',
-  '8':  '/artworks/isaac-ball-parade.png',
+  '8':  '/artworks/isaac-ball-parade.jpg',
 }
