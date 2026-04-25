@@ -1,0 +1,19 @@
+.gallery {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1.2s ease 0.3s, visibility 1.2s ease 0.3s;
+}
+
+.gallery.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.gallery canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}

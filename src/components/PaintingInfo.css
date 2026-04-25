@@ -1,0 +1,70 @@
+.painting-info {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  z-index: 50;
+  background: rgba(13, 11, 8, 0.88);
+  border: 1px solid rgba(201, 168, 76, 0.25);
+  border-left: 3px solid var(--gold);
+  padding: 1rem 1.4rem;
+  max-width: 300px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none;
+}
+
+.painting-info.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.painting-info__title {
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  margin-bottom: 0.3rem;
+}
+
+.painting-info__medium {
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: rgba(245, 240, 232, 0.6);
+  font-style: italic;
+  line-height: 1.7;
+}
+
+.painting-info__artist {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: rgba(245, 240, 232, 0.4);
+  text-transform: uppercase;
+  margin-top: 0.4rem;
+}
+
+.painting-info__price {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  color: rgba(201, 168, 76, 0.7);
+  margin-top: 0.3rem;
+}
+
+.painting-info__hint {
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  color: rgba(245, 240, 232, 0.25);
+  margin-top: 0.75rem;
+  text-transform: uppercase;
+  font-style: normal;
+}
+
+.painting-info__hint kbd {
+  display: inline-block;
+  padding: 0.1em 0.4em;
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  color: rgba(201, 168, 76, 0.6);
+  font-family: var(--font);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+}

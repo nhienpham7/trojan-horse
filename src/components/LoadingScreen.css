@@ -1,0 +1,60 @@
+.loading {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #0d0b08;
+  gap: 2rem;
+  animation: loadingFadeOut 0.6s ease forwards;
+  animation-play-state: paused;
+}
+
+.loading.done {
+  animation-play-state: running;
+  pointer-events: none;
+}
+
+.loading__seal {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading__seal span {
+  font-size: 1.8rem;
+  color: var(--gold);
+  position: relative;
+  z-index: 1;
+}
+
+.loading__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid transparent;
+  border-top-color: var(--gold);
+  border-right-color: rgba(201, 168, 76, 0.3);
+  animation: spin 1.4s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading__text {
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(245, 240, 232, 0.35);
+}
+
+@keyframes loadingFadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; visibility: hidden; }
+}
