@@ -67,6 +67,7 @@ function buildGeometry(scene) {
   box(scene, LX0 - T / 2, WALL_H - 0.45, LZN + 2.1, T, 0.9, 1.4, wM)
   box(scene, LX0 - T / 2, WALL_H * 0.42, LZN + 1.45, T + 0.04, WALL_H * 0.84, 0.12, drM)
   box(scene, LX0 - T / 2, WALL_H * 0.42, LZN + 2.75, T + 0.04, WALL_H * 0.84, 0.12, drM)
+  wall(scene, STEP_X + 1.55, LZS + T / 2, 3.2, T, wM)
 
 
   // Left room north / south
