@@ -22,9 +22,13 @@ export const ARTWORKS = [
 // Real image paths — place files in /public/artworks/
 export const ARTWORK_IMAGE_URLS = {
   '1':  '/artworks/magnus-manton-de.png',
+  '2a': '/artworks/casey.png',
+  '2b': '/artworks/casey.png',
+  '2c': '/artworks/casey.png',
   '3a': '/artworks/rohen-jones-untitled.png',
   '3b': '/artworks/rohen-jones-people-i-dont-know.png',
   '3c': '/artworks/rohen-jones-man-pushing-thru-shower.png',
+  '3d': '/artworks/casey.png',
   '4':  '/artworks/faye-dear-glove.png',
   '5a': '/artworks/jonah-suspended-cloud.png',
   '5b': '/artworks/jonah-untitled.png',

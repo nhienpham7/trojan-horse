@@ -237,7 +237,7 @@ export function placePaintings(scene) {
     P(CAS_X-CAS_W/2-0.5,   EH+0.1, CAS_Z-0.3,    Math.PI/2,     '2c', 0.65, 0.82),
     P(MX0+2.8,             EH,     MZN+WO,        Math.PI,       '3a', 0.88, 0.68),
     P(MX0+5.2,             EH,     MZN+WO,        Math.PI,       '3b', 0.95, 0.74),
-    P((BTH_X0+BTH_X1)/2-0.3, EH,  BTH_ZS-WO,     0,             '3c', 0.65, 0.90),
+    P((BTH_X0+BTH_X1)/2-0.3, EH,  BTH_ZS-WO,     0,             '3c', 0.65, 1.25),
     P(BTH_X1+2.2,          EH,     MZN+WO,        Math.PI,       '3d', 0.78, 0.65),
     G(BTH_X0-1.8,          EH,     MZN+1.8,       Math.PI*0.78,  '4'              ),
     P(STEP_X+2.0,          EH+0.2, MZS-WO,        0,             '5a', 1.1,  0.95),
