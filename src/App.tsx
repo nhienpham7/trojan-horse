@@ -77,7 +77,7 @@ export default function App() {
             video.pause();
             video.currentTime = 0;
           })
-          .catch(() => {});
+          .catch(() => { });
       }
     }
     setShowContent(true);
@@ -170,7 +170,7 @@ export default function App() {
                   </svg>
                 </div>
               </motion.div>
-              
+
               <div className="overflow-hidden">
                 <motion.p
                   initial={{ opacity: 0 }}
@@ -181,12 +181,12 @@ export default function App() {
                   <SplitText text="THE TROJAN HORSE" delay={0.25} />
                 </motion.p>
               </div>
-              
-              <motion.div 
+
+              <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: 120 }}
                 transition={{ delay: 0.75, duration: 0.75 }}
-                className="h-[1px] bg-brand-accent mt-4" 
+                className="h-[1px] bg-brand-accent mt-4"
               />
 
               <motion.button
@@ -211,197 +211,197 @@ export default function App() {
         </AnimatePresence>
 
         <main className="w-full h-full max-w-7xl mx-auto border border-brand-ink/10 rounded-3xl p-6 md:p-12 flex flex-col relative overflow-hidden bg-brand-paper/20">
-        {/* Decorative corner markers */}
-        <div className="absolute top-4 left-4 w-8 h-8 border-t border-l border-brand-accent/40" />
-        <div className="absolute top-4 right-4 w-8 h-8 border-t border-r border-brand-accent/40" />
-        <div className="absolute bottom-4 left-4 w-8 h-8 border-b border-l border-brand-accent/40" />
-        <div className="absolute bottom-4 right-4 w-8 h-8 border-b border-r border-brand-accent/40" />
+          {/* Decorative corner markers */}
+          <div className="absolute top-4 left-4 w-8 h-8 border-t border-l border-brand-accent/40" />
+          <div className="absolute top-4 right-4 w-8 h-8 border-t border-r border-brand-accent/40" />
+          <div className="absolute bottom-4 left-4 w-8 h-8 border-b border-l border-brand-accent/40" />
+          <div className="absolute bottom-4 right-4 w-8 h-8 border-b border-r border-brand-accent/40" />
 
-        {/* Layout Grid */}
-        <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch h-full">
-          
-          {/* Left Column: Info & Title */}
-          <div className="lg:col-span-4 flex flex-col justify-between py-4">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={showContent ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 1, delay: 0.2 }}
-            >
-              <div className="flex items-center gap-4 mb-12">
-                <div className="w-12 h-12 bg-brand-accent text-brand-cream rounded-full">
-                  <svg viewBox="0 0 100 100" className="w-full h-full block" aria-hidden="true">
-                    <text
-                      x="50"
-                      y="50"
-                      textAnchor="middle"
-                      dominantBaseline="middle"
-                      fill="currentColor"
-                      fontFamily="var(--font-serif)"
-                      fontStyle="normal"
-                      fontSize="50"
-                    >
-                      𝕋
-                    </text>
-                  </svg>
-                </div>
-                <div className="text-[10px] uppercase font-bold tracking-[0.3em] leading-tight text-brand-accent">
-                  <div>
-                    <SplitText text="Art Exhibition" animate={showContent} delay={0.25} />
-                  </div>
-                  <div>
-                    <SplitText text="Chicago · 2026" animate={showContent} delay={0.38} />
-                  </div>
-                </div>
-              </div>
+          {/* Layout Grid */}
+          <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch h-full">
 
-              <h1 className="text-6xl md:text-7xl font-display uppercase tracking-tighter mb-8 flex flex-col gap-2 leading-[1] projector-flicker">
-                <span className="block">
-                  <SplitText text="The" animate={showContent} delay={0.32} />
-                </span>
-                <span
-                  className="block text-stroke"
-                  style={{ WebkitTextStrokeColor: "var(--color-brand-ink)" }}
-                >
-                  <SplitText text="Trojan" animate={showContent} delay={0.5} />
-                </span>
-                <span className="block">
-                  <SplitText text="Horse" animate={showContent} delay={0.7} />
-                </span>
-              </h1>
-
-              <div className="space-y-4 max-w-xs">
-                <div className="flex items-start gap-3">
-                  <MapPin size={18} className="text-brand-accent shrink-0 mt-1" />
-                  <p className="text-sm font-serif leading-relaxed italic opacity-80">
-                    <SplitText text="3217 S Morgan St · Chicago, IL" animate={showContent} delay={0.95} />
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={showContent ? { opacity: 1 } : {}}
-              transition={{ duration: 1, delay: 1.5 }}
-              className="hidden lg:block space-y-4"
-            >
-              <p className="text-xs font-mono uppercase tracking-[0.2em] font-semibold opacity-70 ink-underline">
-                <SplitText text="Curated with Intention" animate={showContent} delay={1.6} />
-              </p>
-              <div className="w-full h-[1px] bg-brand-ink/10" />
-              <p className="text-[10px] leading-relaxed font-semibold opacity-70 uppercase tracking-widest">
-                <SplitText text="A group exhibition of emerging artists." animate={showContent} delay={1.8} />
-              </p>
-            </motion.div>
-          </div>
-
-          {/* Center Column: Video */}
-          <div className="lg:col-span-5 lg:-ml-4 relative flex items-center justify-center py-8">
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={showContent ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 1.2, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="relative w-full h-full max-h-[500px] group overflow-hidden rounded-2xl shadow-2xl shadow-brand-ink/10"
-            >
-               <video
-                ref={horseVideoRef}
-                playsInline
-                preload="auto"
-                key={horsePuzzleCacheKey}
-                className="w-full h-full object-cover"
-                onClick={() => {
-                  const video = horseVideoRef.current;
-                  if (!video) return;
-                  if (video.muted || video.volume === 0) {
-                    video.muted = false;
-                    video.volume = 1;
-                    if (video.paused) void video.play();
-                    return;
-                  }
-                  if (video.paused) void video.play();
-                  else video.pause();
-                }}
-                onEnded={() => {
-                  const video = horseVideoRef.current;
-                  if (!video) return;
-                  video.currentTime = 0;
-                  video.pause();
-                }}
+            {/* Left Column: Info & Title */}
+            <div className="lg:col-span-4 flex flex-col justify-between py-4">
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                animate={showContent ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 1, delay: 0.2 }}
               >
-                <source src={`/horse-puzzle.mp4?v=${horsePuzzleCacheKey}`} type="video/mp4" />
-              </video>
-            </motion.div>
-          </div>
+                <div className="flex items-center gap-4 mb-12">
+                  <div className="w-12 h-12 bg-brand-accent text-brand-cream rounded-full">
+                    <svg viewBox="0 0 100 100" className="w-full h-full block" aria-hidden="true">
+                      <text
+                        x="50"
+                        y="50"
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                        fill="currentColor"
+                        fontFamily="var(--font-serif)"
+                        fontStyle="normal"
+                        fontSize="50"
+                      >
+                        𝕋
+                      </text>
+                    </svg>
+                  </div>
+                  <div className="text-[10px] uppercase font-bold tracking-[0.3em] leading-tight text-brand-accent">
+                    <div>
+                      <SplitText text="Art Exhibition" animate={showContent} delay={0.25} />
+                    </div>
+                    <div>
+                      <SplitText text="Chicago · 2026" animate={showContent} delay={0.38} />
+                    </div>
+                  </div>
+                </div>
 
-          {/* Right Column: Artists & CTA */}
-          <div className="lg:col-span-3 flex flex-col justify-between py-4">
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={showContent ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 1, delay: 0.8 }}
-              className="space-y-6"
-            >
-              <div className="mb-4">
-                <span className="text-xs font-bold uppercase tracking-[0.22em] text-brand-ink/70 ink-underline">
-                  <SplitText text="Artist list" animate={showContent} delay={0.95} />
-                </span>
-              </div>
-              
-              <div className="space-y-2">
-                {artists.map((artist, i) => (
-                  <motion.div
-                    key={artist}
-                    initial={{ opacity: 0, x: -10, filter: "blur(8px)" }}
-                    animate={
-                      showContent
-                        ? { opacity: 1, x: 0, filter: "blur(0px)" }
-                        : { opacity: 0, x: -10, filter: "blur(8px)" }
-                    }
-                    transition={{
-                      duration: 0.9,
-                      ease: [0.16, 1, 0.3, 1],
-                      delay: 1.05 + i * 0.08,
-                    }}
-                    whileHover={{ x: 10 }}
-                    className="artist-row flex items-center gap-3 group cursor-default"
+                <h1 className="text-6xl md:text-7xl font-display uppercase tracking-tighter mb-8 flex flex-col gap-2 leading-[1] projector-flicker">
+                  <span className="block">
+                    <SplitText text="The" animate={showContent} delay={0.32} />
+                  </span>
+                  <span
+                    className="block text-stroke"
+                    style={{ WebkitTextStrokeColor: "var(--color-brand-ink)" }}
                   >
-                    <span className="text-[10px] font-mono text-brand-accent/40 group-hover:text-brand-accent transition-colors">0{i+1}</span>
-                    <span className="text-lg md:text-xl font-serif text-brand-ink/80 group-hover:text-brand-ink transition-colors">{artist}</span>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
+                    <SplitText text="Trojan" animate={showContent} delay={0.5} />
+                  </span>
+                  <span className="block">
+                    <SplitText text="Horse" animate={showContent} delay={0.7} />
+                  </span>
+                </h1>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={showContent ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 1, delay: 1.2 }}
-              className="mt-12"
-            >
-              <motion.button
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
-                onClick={() => setGalleryVisible(true)}
-                initial={{ opacity: 0, y: 20, scale: 0.98 }}
-                animate={
-                  showContent ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 20, scale: 0.98 }
-                }
-                transition={{ duration: 1, delay: 1.25, ease: [0.16, 1, 0.3, 1] }}
-                whileHover={{ y: -2, scale: 1.01 }}
-                whileTap={{ scale: 0.985 }}
-                className="cta-button perspective-1000 w-full relative group overflow-hidden bg-brand-ink text-brand-cream py-6 rounded-2xl flex items-center justify-center gap-4 transition-all hover:shadow-xl hover:shadow-brand-accent/20"
+                <div className="space-y-4 max-w-xs">
+                  <div className="flex items-start gap-3">
+                    <MapPin size={18} className="text-brand-accent shrink-0 mt-1" />
+                    <p className="text-sm font-serif leading-relaxed italic opacity-80">
+                      <SplitText text="3217 S Morgan St · Chicago, IL" animate={showContent} delay={0.95} />
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={showContent ? { opacity: 1 } : {}}
+                transition={{ duration: 1, delay: 1.5 }}
+                className="hidden lg:block space-y-4"
               >
-                <div className="absolute inset-0 z-0 bg-brand-accent translate-y-full group-hover:translate-y-0 transition-transform duration-700" />
-                <span className="relative z-10 text-xs font-bold uppercase tracking-[0.4em]">
-                  <SplitText text="Enter Gallery" animate={showContent} delay={1.35} />
-                </span>
-                <ArrowUpRight className="relative z-10 group-hover:rotate-45 transition-transform duration-700" size={18} />
-              </motion.button>
-            </motion.div>
-          </div>
+                <p className="text-xs font-mono uppercase tracking-[0.2em] font-semibold opacity-70 ink-underline">
+                  <SplitText text="Curated with Intention" animate={showContent} delay={1.6} />
+                </p>
+                <div className="w-full h-[1px] bg-brand-ink/10" />
+                <p className="text-[10px] leading-relaxed font-semibold opacity-70 uppercase tracking-widest">
+                  <SplitText text="A group exhibition of emerging artists." animate={showContent} delay={1.8} />
+                </p>
+              </motion.div>
+            </div>
 
-        </div>
-      </main>
+            {/* Center Column: Video */}
+            <div className="lg:col-span-5 lg:-ml-4 relative flex items-center justify-center py-8">
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={showContent ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 1.2, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                className="relative w-full h-full max-h-[500px] group overflow-hidden rounded-2xl shadow-2xl shadow-brand-ink/10"
+              >
+                <video
+                  ref={horseVideoRef}
+                  playsInline
+                  preload="auto"
+                  key={horsePuzzleCacheKey}
+                  className="w-full h-full object-cover"
+                  onClick={() => {
+                    const video = horseVideoRef.current;
+                    if (!video) return;
+                    if (video.muted || video.volume === 0) {
+                      video.muted = false;
+                      video.volume = 1;
+                      if (video.paused) void video.play();
+                      return;
+                    }
+                    if (video.paused) void video.play();
+                    else video.pause();
+                  }}
+                  onEnded={() => {
+                    const video = horseVideoRef.current;
+                    if (!video) return;
+                    video.currentTime = 0;
+                    video.pause();
+                  }}
+                >
+                  <source src={`/horse-puzzle.mp4?v=${horsePuzzleCacheKey}`} type="video/mp4" />
+                </video>
+              </motion.div>
+            </div>
+
+            {/* Right Column: Artists & CTA */}
+            <div className="lg:col-span-3 flex flex-col justify-between py-4">
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={showContent ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 1, delay: 0.8 }}
+                className="space-y-6"
+              >
+                <div className="mb-4">
+                  <span className="text-xs font-bold uppercase tracking-[0.22em] text-brand-ink/70 ink-underline">
+                    <SplitText text="Artist list" animate={showContent} delay={0.95} />
+                  </span>
+                </div>
+
+                <div className="space-y-2">
+                  {artists.map((artist, i) => (
+                    <motion.div
+                      key={artist}
+                      initial={{ opacity: 0, x: -10, filter: "blur(8px)" }}
+                      animate={
+                        showContent
+                          ? { opacity: 1, x: 0, filter: "blur(0px)" }
+                          : { opacity: 0, x: -10, filter: "blur(8px)" }
+                      }
+                      transition={{
+                        duration: 0.9,
+                        ease: [0.16, 1, 0.3, 1],
+                        delay: 1.05 + i * 0.08,
+                      }}
+                      whileHover={{ x: 10 }}
+                      className="artist-row flex items-center gap-3 group cursor-default"
+                    >
+                      <span className="text-[10px] font-mono text-brand-accent/40 group-hover:text-brand-accent transition-colors">0{i + 1}</span>
+                      <span className="text-lg md:text-xl font-serif text-brand-ink/80 group-hover:text-brand-ink transition-colors">{artist}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={showContent ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 1, delay: 1.2 }}
+                className="mt-12"
+              >
+                <motion.button
+                  onMouseEnter={() => setIsHovered(true)}
+                  onMouseLeave={() => setIsHovered(false)}
+                  onClick={() => setGalleryVisible(true)}
+                  initial={{ opacity: 0, y: 20, scale: 0.98 }}
+                  animate={
+                    showContent ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 20, scale: 0.98 }
+                  }
+                  transition={{ duration: 1, delay: 1.25, ease: [0.16, 1, 0.3, 1] }}
+                  whileHover={{ y: -2, scale: 1.01 }}
+                  whileTap={{ scale: 0.985 }}
+                  className="cta-button perspective-1000 w-full relative group overflow-hidden bg-brand-ink text-brand-cream py-6 rounded-2xl flex items-center justify-center gap-4 transition-all hover:shadow-xl hover:shadow-brand-accent/20"
+                >
+                  <div className="absolute inset-0 z-0 bg-brand-accent translate-y-full group-hover:translate-y-0 transition-transform duration-700" />
+                  <span className="relative z-10 text-xs font-bold uppercase tracking-[0.4em]">
+                    <SplitText text="Enter Gallery" animate={showContent} delay={1.35} />
+                  </span>
+                  <ArrowUpRight className="relative z-10 group-hover:rotate-45 transition-transform duration-700" size={18} />
+                </motion.button>
+              </motion.div>
+            </div>
+
+          </div>
+        </main>
       </div>
       <Gallery visible={galleryVisible} />
       {galleryVisible && (
