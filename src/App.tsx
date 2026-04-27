@@ -410,7 +410,7 @@ export default function App() {
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
           onClick={() => setGalleryVisible(false)}
-          className="fixed bottom-8 left-8 z-50 flex items-center gap-2 bg-black/60 text-brand-cream border border-brand-accent/40 px-5 py-3 rounded-full text-xs font-mono uppercase tracking-[0.3em] hover:bg-brand-accent transition-colors duration-300"
+          className="fixed top-[4.5rem] left-[1.8rem] z-50 flex items-center gap-2 bg-black/60 text-brand-cream border border-brand-accent/40 px-4 py-2 rounded-full text-[10px] font-mono uppercase tracking-[0.3em] hover:bg-brand-accent transition-colors duration-300"
         >
           ← Back
         </motion.button>

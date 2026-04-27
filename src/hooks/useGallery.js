@@ -24,6 +24,12 @@ const winM = new THREE.MeshStandardMaterial({ color: 0x8090a0, roughness: 0.2, m
 const frmM = new THREE.MeshStandardMaterial({ color: 0x5a5448, roughness: 0.5, metalness: 0.15 })
 const lgtM = new THREE.MeshStandardMaterial({ color: 0xf0e8d0, emissive: 0xfff0c0, emissiveIntensity: 1.3 })
 
+const CASEY_PEDESTAL_SIZE = 0.8
+const CASEY_PEDESTAL_H = 1.0
+const CASEY_ART_SIZE = 0.6
+const MANTON_DE_X = LX0 + 0.08
+const MANTON_DE_Z = lCZ
+const CASEY_TO_MANTON_DE_RY = Math.atan2(MANTON_DE_X - CAS_X, MANTON_DE_Z - CAS_Z)
 // Helpers 
 function box(scene, x, y, z, w, h, d, mat) {
   const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat)
@@ -106,12 +112,9 @@ function buildGeometry(scene) {
   box(scene, bDX, WALL_H - 0.42, BTH_ZS + T / 2, bDW, 0.84, T, wM)
 
 
-  // Casey
+ // Casey
   // Small pedestal 
-  const baseSize = 0.8
-  const baseH = 1.0
-
-  box(scene, CAS_X, baseH / 2, CAS_Z, baseSize, baseH, baseSize, bM)
+  box(scene, CAS_X, CASEY_PEDESTAL_H / 2, CAS_Z, CASEY_PEDESTAL_SIZE, CASEY_PEDESTAL_H, CASEY_PEDESTAL_SIZE, bM)
 
 
   // Right divider
@@ -236,7 +239,7 @@ function placePaintings(scene, rendererRef) {
 
   return [
     P(LX0 + WO, 2.08, lCZ, Math.PI / 2, '1', 4.95, 2.78),
-    P(CAS_X + CAS_W / 2 - WO, EH - 0.5, CAS_Z, -Math.PI / 2, '2a', 0.6, 0.6),
+    P(CAS_X, CASEY_PEDESTAL_H + (CASEY_ART_SIZE + 0.07) / 2, CAS_Z, CASEY_TO_MANTON_DE_RY, '2a', CASEY_ART_SIZE, CASEY_ART_SIZE),
     P(MX0 + 1.0, EH, MZN + WO, 0, '3a', 1.18, 0.68),
     P(MX0 + 4.2, EH, MZN + WO, 0, '3b', 3.4, 2.9),
     P((BTH_X0 + BTH_X1) / 2, EH, BTH_ZN + 3.55, 0, '3c', 0.65, 0.95),
@@ -263,7 +266,16 @@ export function useGallery(canvasRef, controlsRef) {
   const rafRef = useRef(null)
 
   const [nearbyArt, setNearbyArt] = useState(null)
+  const [focusedArt, setFocusedArt] = useState(null)
   const [isReady, setIsReady] = useState(false)
+
+  const nearbyRef = useRef(null)
+  const focusedArtRef = useRef(null)
+
+  const closeFocus = () => {
+    setFocusedArt(null)
+    focusedArtRef.current = null
+  }
 
   const vecDir = useRef(new THREE.Vector3())
   const vecRight = useRef(new THREE.Vector3())
@@ -318,6 +330,12 @@ export function useGallery(canvasRef, controlsRef) {
       const ctrl = controlsRef.current
       if (!ctrl || !mounted) return
 
+      if (focusedArtRef.current) {
+        // Skip movement and interaction logic when focused
+        renderer.render(scene, camera)
+        return
+      }
+
       camera.quaternion.setFromEuler(new THREE.Euler(ctrl.pitch, ctrl.yaw, 0, 'YXZ'))
 
       camera.getWorldDirection(vecDir.current)
@@ -339,20 +357,36 @@ export function useGallery(canvasRef, controlsRef) {
         const d = camera.position.distanceTo(p.position)
         if (d < minD) { minD = d; closest = p }
       }
-      if (mounted) setNearbyArt(closest ? closest.userData : null)
+      
+      const newNearby = closest ? closest.userData : null
+      if (nearbyRef.current?.artworkId !== newNearby?.artworkId) {
+        nearbyRef.current = newNearby
+        if (mounted) setNearbyArt(newNearby)
+      }
 
       renderer.render(scene, camera)
     }
     tick()
+
+    const onKeyDown = (e) => {
+      if (e.code === 'KeyE') {
+        if (nearbyRef.current && !focusedArtRef.current) {
+          setFocusedArt(nearbyRef.current)
+          focusedArtRef.current = nearbyRef.current
+        }
+      }
+    }
+    window.addEventListener('keydown', onKeyDown)
 
     return () => {
       mounted = false
       cancelAnimationFrame(rafRef.current)
       if (readyFrame) cancelAnimationFrame(readyFrame)
       window.removeEventListener('resize', onResize)
+      window.removeEventListener('keydown', onKeyDown)
       renderer.dispose()
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  return { nearbyArt, cameraRef, paintingsRef, isReady }
+  return { nearbyArt, focusedArt, closeFocus, cameraRef, paintingsRef, isReady }
 }
