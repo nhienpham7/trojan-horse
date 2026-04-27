@@ -5,7 +5,7 @@ export default function HUD() {
     <div className="hud">
       <div className="hud-title">
         <span>Art Exhibition</span>
-        <strong>The Trojan Horses</strong>
+        <strong>The Trojan Horse</strong>
       </div>
       <div className="hud-controls">
         W A S D / ↑↓←→ &nbsp; Move<br />

@@ -58,6 +58,7 @@ export function useControls() {
       s.touchY = e.touches[0].clientY
     }
     const onTouchEnd  = () => { s.touching = false }
+    const onContextMenu = (e) => { e.preventDefault() }
 
     window.addEventListener('keydown',     onKeyDown)
     window.addEventListener('keyup',       onKeyUp)
@@ -68,6 +69,7 @@ export function useControls() {
     window.addEventListener('touchstart',  onTouchStart,  { passive: true })
     window.addEventListener('touchmove',   onTouchMove,   { passive: true })
     window.addEventListener('touchend',    onTouchEnd)
+    window.addEventListener('contextmenu', onContextMenu)
 
     return () => {
       window.removeEventListener('keydown',    onKeyDown)
@@ -79,6 +81,7 @@ export function useControls() {
       window.removeEventListener('touchstart', onTouchStart)
       window.removeEventListener('touchmove',  onTouchMove)
       window.removeEventListener('touchend',   onTouchEnd)
+      window.removeEventListener('contextmenu', onContextMenu)
     }
   }, [])
 
