@@ -1,6 +1,6 @@
 .minimap {
   position: fixed;
-  bottom: 1.5rem;
+  top: 1.5rem;
   right: 1.5rem;
   z-index: 50;
   animation: minimapFadeIn 1s ease 1s both;

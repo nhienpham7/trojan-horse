@@ -34,9 +34,15 @@
 }
 
 .hud-controls {
+  position: fixed;
+  top: calc(1.5rem + 100px + 1.6rem + 0.8rem);
+  right: 1.5rem;
+  z-index: 50;
   font-size: 0.65rem;
   letter-spacing: 0.15em;
   color: rgba(245, 240, 232, 0.4);
   text-align: right;
   line-height: 1.9;
+  pointer-events: none;
+  animation: hudFadeIn 1s ease 1s both;
 }
